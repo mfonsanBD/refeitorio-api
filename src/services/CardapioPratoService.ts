@@ -8,7 +8,7 @@ import {CardapioRepositories} from "../repositories/CardapioRepositories";
 import {HandleDbCardapios} from "../services/CardapioService";
 
 const moment = require('moment-timezone');
-const dataAtual = moment().tz('America/Sao_Paulo').format('YYYY/MM/DD ')+"00:00:00";
+const dataAtual = moment().tz('America/Sao_Paulo').format('YYYY/MM/DD')+" 00:00:00";
 
 class HandleDbCardapioPrato{
     async insereCardapioPrato({pratos}){                
@@ -58,7 +58,12 @@ class HandleDbCardapioPrato{
 
     async listaCardapioDia(){        
         const cardapioRepositorio = getCustomRepository(CardapioRepositories);        
-        const cardapio = await cardapioRepositorio.findOne({ relations: ["pratos"],where:{data: MoreThanOrEqual(dataAtual)}});        
+        const cardapio = await cardapioRepositorio.findOne({ 
+            relations: ["pratos", "categorias"],
+            where:{
+                data: MoreThanOrEqual(dataAtual)
+            }
+        });        
         return cardapio;        
     }
 }

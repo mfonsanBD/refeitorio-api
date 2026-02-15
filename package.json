@@ -2,9 +2,7 @@
   "name": "backend-app",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/victorbraga8/backend-app.git",
-  "author": "victorbraga8 <victorbraga.8@hotmail.com>",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
