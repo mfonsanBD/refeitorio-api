@@ -50,11 +50,11 @@ class HandleDbPratos{
         const pratoRepositorio = getCustomRepository(PratoRepositories);                
         if(!categoria_id){
             // throw new Error("Informe o Prato, Categoria ou Status");
-            const pratos = await pratoRepositorio.find();
+            const pratos = await pratoRepositorio.find({ relations: ["categoria"]});
             return pratos;
         }
         if(categoria_id){
-            const pratos = await pratoRepositorio.find({categoria_id:categoria_id});            
+            const pratos = await pratoRepositorio.find({where: {categoria_id:categoria_id}, relations: ["categoria"]});            
             return pratos;
         }        
         // const prato = await pratoRepositorio.find({nome: Like("%"+nome+"%")});
