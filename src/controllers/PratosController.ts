@@ -4,9 +4,9 @@ const pratos = new HandleDbPratos();
 
 class HandlePratos{
     async inserePrato(request:Request, response:Response){
-        const {nome, categoria_id} = request.body;
+        const {nome, categoria_id, lactose, vegano, gluten} = request.body;
         const status = true;                
-        const inserePrato = await pratos.inserePrato({nome, categoria_id}, status);
+        const inserePrato = await pratos.inserePrato({nome, categoria_id, lactose, vegano, gluten}, status);
         return response.json(inserePrato);
         
     }
@@ -28,9 +28,9 @@ class HandlePratos{
     }
 
     async atualizaPrato(request:Request, response:Response){
-        const {nome, categoria_id, status, id} = request.body;
+        const {nome, categoria_id, status, id, lactose, vegano, gluten} = request.body;
         
-        const atualizaPrato = await pratos.atualizaPrato({nome, categoria_id, status, id});
+        const atualizaPrato = await pratos.atualizaPrato({nome, categoria_id, status, id, lactose, vegano, gluten});
 
         return response.json(atualizaPrato);
     }
@@ -38,7 +38,7 @@ class HandlePratos{
     async deletaPrato(request:Request, response:Response){
         const {id} = request.params;
         
-        const deletaPrato = await pratos.deletaPrato({id});
+        await pratos.deletaPrato({id});
         
         return response.json({"return":"ID Prato Excluído: "+id});
     }

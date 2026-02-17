@@ -4,11 +4,14 @@ import {PratoRepositories} from "../repositories/PratosRepositories";
 
 interface TypesPrato{
     nome:string;
-    categoria_id:number;    
+    categoria_id:number;
+    lactose?:boolean;
+    vegano?:boolean;
+    gluten?:boolean;
 }
 
 class HandleDbPratos{
-    async inserePrato({nome, categoria_id}:TypesPrato, status){
+    async inserePrato({nome, categoria_id, lactose, vegano, gluten}:TypesPrato, status){
         const pratoRepositorio = getCustomRepository(PratoRepositories);
         const pratoExistente = await pratoRepositorio.findOne({nome});
 
@@ -25,7 +28,7 @@ class HandleDbPratos{
         }
 
         const prato = pratoRepositorio.create({
-            nome, categoria_id, status
+            nome, categoria_id, status, lactose, vegano, gluten
         })
 
         await pratoRepositorio.save(prato);
@@ -49,23 +52,20 @@ class HandleDbPratos{
     async listaTodosOsPratos({categoria_id}){
         const pratoRepositorio = getCustomRepository(PratoRepositories);                
         if(!categoria_id){
-            // throw new Error("Informe o Prato, Categoria ou Status");
             const pratos = await pratoRepositorio.find({ relations: ["categoria"]});
             return pratos;
         }
-        if(categoria_id){
-            const pratos = await pratoRepositorio.find({where: {categoria_id:categoria_id}, relations: ["categoria"]});            
-            return pratos;
-        }        
-        // const prato = await pratoRepositorio.find({nome: Like("%"+nome+"%")});
-        const pratos = await pratoRepositorio.find({categoria_id:categoria_id});            
-        if(!pratos[0] || pratos.length == 0){
+
+        const pratos = await pratoRepositorio.find({where: {categoria_id:categoria_id}, relations: ["categoria"]});            
+        
+        if(!pratos || pratos.length === 0){
             throw new Error("Prato Inexistente");
         }
-        // return prato;
+
+        return pratos;
     }
 
-    async atualizaPrato({nome, categoria_id, status, id}){
+    async atualizaPrato({nome, categoria_id, status, id, lactose, vegano, gluten}){
         if(!id && !categoria_id && !status){
             throw new Error("Informe o Prato, Categoria ou Status");
         }
@@ -87,10 +87,26 @@ class HandleDbPratos{
 
         if(typeof(status) == "undefined"){
             status = prato.status;         
-        }       
+        }
+
+        if(typeof(lactose) == "undefined"){
+            lactose = prato.lactose;
+        }
+
+        if(typeof(vegano) == "undefined"){
+            vegano = prato.vegano;
+        }
+
+        if(typeof(gluten) == "undefined"){
+            gluten = prato.gluten;
+        }
+
         prato.nome = nome;
         prato.categoria_id = categoria_id;
         prato.status = status;
+        prato.lactose = lactose;
+        prato.vegano = vegano;
+        prato.gluten = gluten;
 
         await pratoRepositorio.save(prato);
 
