@@ -1,5 +1,5 @@
-import {Entity,PrimaryGeneratedColumn,PrimaryColumn, Column, ManyToMany, JoinTable,} from "typeorm";
-import { Prato } from "./Prato";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import { CardapioPrato } from "./CardapioPrato";
 
 @Entity("cardapio")
 class Cardapio {
@@ -12,20 +12,8 @@ class Cardapio {
     @Column()
     updated_at:Date;    
 
-    @ManyToMany(() => Prato, prato => prato.id)
-    @JoinTable({
-        name: "cardapioPrato",
-        joinColumn: {
-            name: "cardapio_id",
-            referencedColumnName: "id"
-            },
-        inverseJoinColumn: {
-            name: "prato_id",
-            referencedColumnName: "id"
-            }
-        })
-    pratos: Prato[];
-      
+    @OneToMany(() => CardapioPrato, cardapioPrato => cardapioPrato.cardapio)
+    pratos: CardapioPrato[];
 }
 
 export {Cardapio}

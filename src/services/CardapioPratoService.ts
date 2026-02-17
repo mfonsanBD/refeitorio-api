@@ -59,7 +59,7 @@ class HandleDbCardapioPrato{
     async listaCardapioDia(){        
         const cardapioRepositorio = getCustomRepository(CardapioRepositories);        
         const cardapio = await cardapioRepositorio.findOne({ 
-            relations: ["pratos", "categorias"],
+            relations: ["pratos", "pratos.prato", "pratos.prato.categoria"],
             where:{
                 data: MoreThanOrEqual(dataAtual)
             }
